@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Secret Aesthetics — Send Formatted Email</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+          sans-serif;
+        background: #1a1a1a;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+      }
+
+      .container {
+        background: #ffffff;
+        border-radius: 8px;
+        width: 100%;
+        max-width: 580px;
+        box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
+        overflow: hidden;
+      }
+
+      .header {
+        background: #1a1a1a;
+        padding: 24px 32px;
+        text-align: center;
+      }
+
+      .header h1 {
+        font-family: Georgia, serif;
+        font-size: 20px;
+        color: #c9a96e;
+        letter-spacing: 4px;
+        font-weight: 400;
+        text-transform: uppercase;
+      }
+
+      .header p {
+        font-size: 11px;
+        color: #888;
+        margin-top: 4px;
+        letter-spacing: 1px;
+      }
+
+      .form-body {
+        padding: 28px 32px;
+      }
+
+      .field {
+        margin-bottom: 20px;
+      }
+
+      .field label {
+        display: block;
+        font-size: 12px;
+        font-weight: 600;
+        color: #555;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 6px;
+      }
+
+      .field label .req {
+        color: #c9a96e;
+      }
+
+      .field input,
+      .field select,
+      .field textarea {
+        width: 100%;
+        padding: 10px 14px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 14px;
+        font-family: inherit;
+        color: #333;
+        transition: border-color 0.2s;
+      }
+
+      .field input:focus,
+      .field select:focus,
+      .field textarea:focus {
+        outline: none;
+        border-color: #c9a96e;
+      }
+
+      .field textarea {
+        min-height: 200px;
+        resize: vertical;
+        line-height: 1.6;
+      }
+
+      .field .hint {
+        font-size: 11px;
+        color: #999;
+        margin-top: 4px;
+      }
+
+      .row {
+        display: flex;
+        gap: 16px;
+      }
+      .row .field {
+        flex: 1;
+      }
+
+      .submit-btn {
+        width: 100%;
+        padding: 14px;
+        background: #1a1a1a;
+        color: #c9a96e;
+        border: none;
+        border-radius: 4px;
+        font-size: 14px;
+        font-weight: 600;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition: background 0.2s;
+        margin-top: 8px;
+      }
+
+      .submit-btn:hover {
+        background: #2a2a2a;
+      }
+      .submit-btn:disabled {
+        background: #999;
+        cursor: not-allowed;
+      }
+
+      .status {
+        text-align: center;
+        padding: 12px;
+        margin-top: 16px;
+        border-radius: 4px;
+        font-size: 13px;
+        display: none;
+      }
+
+      .status.success {
+        display: block;
+        background: #f0f9f0;
+        color: #2d7a2d;
+        border: 1px solid #c3e6c3;
+      }
+
+      .status.error {
+        display: block;
+        background: #fdf0f0;
+        color: #c23030;
+        border: 1px solid #f0c3c3;
+      }
+
+      .status.sending {
+        display: block;
+        background: #fdf8f0;
+        color: #8a6d2b;
+        border: 1px solid #f0e0c3;
+      }
+
+      .footer {
+        padding: 16px 32px;
+        background: #faf8f5;
+        border-top: 1px solid #eee;
+        text-align: center;
+        font-size: 11px;
+        color: #999;
+      }
+
+      .section-divider {
+        border: none;
+        border-top: 1px solid #eee;
+        margin: 24px 0 20px 0;
+      }
+
+      .section-label {
+        font-size: 11px;
+        color: #c9a96e;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        margin-bottom: 16px;
+        font-weight: 600;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1>Secret Aesthetics</h1>
+        <p>Send Formatted Email</p>
+      </div>
+
+      <div class="form-body">
+        <!-- SECTION: Client Details -->
+        <div class="section-label">Client Details</div>
+
+        <div class="row">
+          <div class="field">
+            <label>
+              First Name
+              <span class="req">*</span>
+            </label>
+            <input
+              type="text"
+              id="clientFirstName"
+              placeholder="e.g. Sarah"
+              required
+            />
+          </div>
+          <div class="field">
+            <label>Last Name</label>
+            <input type="text" id="clientLastName" placeholder="e.g. Johnson" />
+          </div>
+        </div>
+
+        <div class="field">
+          <label>
+            Client Email
+            <span class="req">*</span>
+          </label>
+          <input
+            type="email"
+            id="clientEmail"
+            placeholder="e.g. sarah@example.com"
+            required
+          />
+        </div>
+
+        <div class="field">
+          <label>Email Subject</label>
+          <input
+            type="text"
+            id="emailSubject"
+            placeholder="e.g. Your Enquiry — Ablative Laser Resurfacing"
+          />
+          <p class="hint">
+            Leave blank for default: "Your Enquiry — Secret Aesthetics"
+          </p>
+        </div>
+
+        <hr class="section-divider" />
+
+        <!-- SECTION: Reviewer & Treatment -->
+        <div class="section-label">Response Details</div>
+
+        <div class="field">
+          <label>
+            Your Name (Reviewer)
+            <span class="req">*</span>
+          </label>
+          <input
+            type="text"
+            id="reviewerName"
+            placeholder="e.g. Dr. Smith"
+            required
+          />
+          <p class="hint">Appears in sign-off: "Warm regards, [Your Name]"</p>
+        </div>
+
+        <div class="field">
+          <label>Sign-Off Style</label>
+          <select id="signOff">
+            <option value="Warm regards">Warm regards</option>
+            <option value="Kind regards">Kind regards</option>
+            <option value="Warmest regards">Warmest regards</option>
+            <option value="Best regards">Best regards</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label>Treatment / Result Image to Attach</label>
+          <select id="treatmentSelect">
+            <option value="">— No image attachment —</option>
+            <optgroup label="Laser & Light Treatments">
+              <option value="ABLATIVE LASER RESURFACING">
+                Ablative Laser Resurfacing
+              </option>
+              <option value="ABLATIVE LASER RESURFACING 3">
+                Ablative Laser Resurfacing (Example 3)
+              </option>
+              <option value="ABLATIVE LASER RESURFACING 10">
+                Ablative Laser Resurfacing (Example 10)
+              </option>
+              <option value="ABLATIVE LASER FOR DEEP WRINKLES">
+                Ablative Laser for Deep Wrinkles
+              </option>
+              <option value="AVICLEAR">AviClear</option>
+              <option value="BBL 5">BBL (Example 5)</option>
+              <option value="BBL 6">BBL (Example 6)</option>
+              <option value="BBL 7">BBL (Example 7)</option>
+              <option value="BBL AND HALO">BBL and Halo</option>
+            </optgroup>
+            <optgroup label="Injectables">
+              <option value="ANTI WRINKLE TREATMENT">
+                Anti Wrinkle Treatment
+              </option>
+              <option value="ANTI WRINKLE 2">Anti Wrinkle (Example 2)</option>
+              <option value="5ML FILLER PACKAGE">5ml Filler Package</option>
+              <option value="ANGRY LINES">Angry Lines</option>
+            </optgroup>
+            <optgroup label="Eye Treatments">
+              <option value="3-IN-1 EYE REJUVENATION">
+                3-in-1 Eye Rejuvenation
+              </option>
+              <option value="3-IN-1 EYE REJUVENATION 2">
+                3-in-1 Eye Rejuvenation (Example 2)
+              </option>
+            </optgroup>
+            <optgroup label="General / Best Results">
+              <option value="BEST RESULTS">
+                Best Results (Full Face Transformation)
+              </option>
+              <option value="BEST RESULTS SKIN">
+                Best Results (Skin Transformation)
+              </option>
+            </optgroup>
+          </select>
+          <p class="hint">
+            Selects the matching image from the clinic's result gallery
+          </p>
+        </div>
+
+        <hr class="section-divider" />
+
+        <!-- SECTION: Email Content -->
+        <div class="section-label">Email Content</div>
+
+        <div class="field">
+          <label>
+            Email Draft Text
+            <span class="req">*</span>
+          </label>
+          <textarea
+            id="draftText"
+            placeholder="Paste the AI draft text here...&#10;&#10;Copy from Respond.io AI Assist composer → paste here.&#10;&#10;The text will be automatically formatted with:&#10;• Proper paragraphs and spacing&#10;• Premium clinic branding&#10;• Awards, press, and review badges&#10;• Booking links and contact info&#10;• Selected result image&#10;&#10;TIP: Do NOT include the sign-off — it's added automatically."
+          ></textarea>
+        </div>
+
+        <!-- Submit -->
+        <button class="submit-btn" id="submitBtn" onclick="submitForm()">
+          Send Formatted Email
+        </button>
+
+        <div class="status" id="statusMsg"></div>
+      </div>
+
+      <div class="footer">
+        Internal tool — Emails are formatted with premium template + result
+        images and sent via clinic email
+      </div>
+    </div>
+
+    <script>
+      const WEBHOOK_URL =
+        'https://hook.eu1.make.com/xmkihlfmrya1c2x4u47lh45i9b3meuow'
+
+      async function submitForm() {
+        const btn = document.getElementById('submitBtn')
+        const status = document.getElementById('statusMsg')
+
+        const clientFirstName = document
+          .getElementById('clientFirstName')
+          .value.trim()
+        const clientLastName = document
+          .getElementById('clientLastName')
+          .value.trim()
+        const clientEmail = document.getElementById('clientEmail').value.trim()
+        const emailSubject =
+          document.getElementById('emailSubject').value.trim() ||
+          'Your Enquiry \u2014 Secret Aesthetics'
+        const reviewerName = document
+          .getElementById('reviewerName')
+          .value.trim()
+        const signOff = document.getElementById('signOff').value
+        const treatmentSelect = document.getElementById('treatmentSelect').value
+        const draftText = document.getElementById('draftText').value.trim()
+
+        if (!clientFirstName) {
+          showStatus('Please enter client first name', 'error')
+          return
+        }
+        if (!clientEmail) {
+          showStatus('Please enter client email', 'error')
+          return
+        }
+        if (!clientEmail.includes('@')) {
+          showStatus('Please enter a valid email', 'error')
+          return
+        }
+        if (!reviewerName) {
+          showStatus('Please enter your name', 'error')
+          return
+        }
+        if (!draftText) {
+          showStatus('Please paste the email draft text', 'error')
+          return
+        }
+
+        btn.disabled = true
+        btn.textContent = 'SENDING...'
+        showStatus('Formatting email and attaching results...', 'sending')
+
+        const payload = {
+          client_first_name: clientFirstName,
+          client_last_name: clientLastName,
+          client_email: clientEmail,
+          email_subject: emailSubject,
+          reviewer_name: reviewerName,
+          sign_off: signOff,
+          treatment: treatmentSelect,
+          draft_text: draftText,
+        }
+
+        try {
+          const response = await fetch(WEBHOOK_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload),
+          })
+
+          if (response.ok) {
+            showStatus(
+              'Email sent successfully! Formatted email with image dispatched.',
+              'success',
+            )
+            setTimeout(() => {
+              document.getElementById('draftText').value = ''
+              document.getElementById('treatmentSelect').value = ''
+              document.getElementById('clientFirstName').value = ''
+              document.getElementById('clientLastName').value = ''
+              document.getElementById('clientEmail').value = ''
+              document.getElementById('emailSubject').value = ''
+              btn.disabled = false
+              btn.textContent = 'SEND FORMATTED EMAIL'
+            }, 3000)
+          } else {
+            showStatus(
+              'Error: ' + response.status + ' \u2014 Please try again',
+              'error',
+            )
+            btn.disabled = false
+            btn.textContent = 'SEND FORMATTED EMAIL'
+          }
+        } catch (err) {
+          showStatus(
+            'Network error \u2014 check connection and try again',
+            'error',
+          )
+          btn.disabled = false
+          btn.textContent = 'SEND FORMATTED EMAIL'
+        }
+      }
+
+      function showStatus(msg, type) {
+        const status = document.getElementById('statusMsg')
+        status.textContent = msg
+        status.className = 'status ' + type
+      }
+    </script>
+  </body>
+</html>
